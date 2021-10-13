@@ -24,6 +24,15 @@ public class ejercicio2 {
             numeros.add(unNumero);
         }
 
+        System.out.println("Usted ingreso:");
+
+        for (Integer cadaNumero:numeros){
+            System.out.println("#" + (numeros.indexOf(cadaNumero)+1)+" - "+cadaNumero);
+        }
+
+        System.out.println("Numero de Elementos actual: "+numeros.size());
+
+
         System.out.println("Ingrese Nro. para la primera posicion");
         Integer numeroPrimeraPosicion = teclado.nextInt();
 
@@ -37,12 +46,10 @@ public class ejercicio2 {
             numerosAImprimir.add(cadaNumero);
         }
 
-
         for (Integer cadaNumero:numerosAImprimir){
             System.out.println("#" + (numerosAImprimir.indexOf(cadaNumero)+1)+" - "+cadaNumero);
-
-
         }
+        System.out.println("Numero de Elementos actual: "+numerosAImprimir.size());
 
     }
 }
