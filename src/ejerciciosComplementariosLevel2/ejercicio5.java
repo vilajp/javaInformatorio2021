@@ -16,6 +16,32 @@ Total Final: $ 12915
 */
 
 package ejerciciosComplementariosLevel2;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class ejercicio5 {
+    public static void main(String[] args) {
+
+        Scanner teclado = new Scanner(System.in);
+        String stringHorasTrabajadas = teclado.nextLine();
+        String stringValorPorHora = teclado.nextLine();
+
+        List<Integer> totalesSueldo = new ArrayList<>();
+
+        String[] horasTrabajadas = stringHorasTrabajadas.substring(1,stringHorasTrabajadas.length()-1).split(",");
+        String[] valorPorHora = stringValorPorHora.substring(1,stringValorPorHora.length()-1).split(",");
+
+        int totalSueldoFinal = 0;
+
+        for(int cadaIndice= 0; cadaIndice<horasTrabajadas.length; cadaIndice++){
+            int valorHora = Integer.parseInt(horasTrabajadas[cadaIndice].strip());
+            int horaTrabajada = Integer.parseInt(valorPorHora[cadaIndice].strip());
+            int totalSueldo = valorHora*horaTrabajada;
+            totalesSueldo.add(totalSueldo);
+            totalSueldoFinal+=totalSueldo;
+        }
+        System.out.println(totalesSueldo);
+        System.out.println("Total Final: $ "+totalSueldoFinal);
+    }
 }
