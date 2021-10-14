@@ -16,7 +16,7 @@ Crear una función que dado 2 argumentos (int, siendo el primero menor al segund
 */
 
 
-        package ejerciciosComplementariosLevel2;
+package ejerciciosComplementariosLevel2;
 
 public class ejercicio7 {
 }

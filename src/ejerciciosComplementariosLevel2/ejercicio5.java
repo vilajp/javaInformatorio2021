@@ -24,7 +24,9 @@ public class ejercicio5 {
     public static void main(String[] args) {
 
         Scanner teclado = new Scanner(System.in);
+        System.out.println("Ingrese horas trabajadas entre corchetes y seperadas por comas");
         String stringHorasTrabajadas = teclado.nextLine();
+        System.out.println("Ingrese valor de la hora entre corchetes y seperadas por comas");
         String stringValorPorHora = teclado.nextLine();
 
         List<Integer> totalesSueldo = new ArrayList<>();
