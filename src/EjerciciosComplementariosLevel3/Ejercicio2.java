@@ -23,7 +23,7 @@ public class Ejercicio2 {
 
     public static int hacerPotencia(int numero, int potencia){
         int resultado = 1;
-        for (int vuelta = 0; vuelta <= potencia; vuelta++){
+        for (int vuelta = 1; vuelta <= potencia; vuelta++){
             resultado *=numero;
         }
         return resultado;
