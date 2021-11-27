@@ -21,13 +21,14 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Ejercicio5 {
     public static void main(String[] args) {
 
         List<Alumno> alumnos = List.of(
                 new Alumno("Homero", "Simpson", LocalDate.of(1975,1,20)),
-                new Alumno("Bart", "Simpson", LocalDate.of(2019,2,8)),
+                new Alumno("Bart", "Simpson", LocalDate.of(2019,12,8)),
                 new Alumno("Lisa", "Simpson", LocalDate.of(2004,2,18)),
                 new Alumno("Marge", "Simpson", LocalDate.of(1982,7,16)),
                 new Alumno("SantasHelper", "Simpson", LocalDate.of(2005,7,19))
@@ -35,7 +36,16 @@ public class Ejercicio5 {
 
         Map<String, Integer> nombresYEdadesStream = alumnos.stream()
                 .collect(Collectors.toMap(nombreAlumno -> nombreAlumno.getApellido()+" "+nombreAlumno.getNombre(),
-                        edadEmpleado -> LocalDate.now().getYear() -edadEmpleado.getFechaDeNacimiento().getYear()));
+                        edadEmpleado ->  calculoEdad(edadEmpleado.getFechaDeNacimiento())));
         System.out.println(nombresYEdadesStream);
+    }
+
+    private static Integer calculoEdad(LocalDate fechaNacimientoEmpleado){
+        Stream<LocalDate> edadEmpleado = fechaNacimientoEmpleado.datesUntil(LocalDate.now());
+        List<LocalDate> listaFechas = edadEmpleado
+                .collect(Collectors.toList());
+        Integer diasEmpleado = listaFechas.size();
+        return diasEmpleado/365;
+
     }
 }
