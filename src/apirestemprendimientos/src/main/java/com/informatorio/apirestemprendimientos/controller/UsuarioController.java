@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 public class UsuarioController {
-    
+
     @GetMapping( value="/usuario")
     public List<Usuario> obtenerTodos(){
         return new ArrayList<Usuario>();
