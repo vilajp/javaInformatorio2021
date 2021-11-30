@@ -1,9 +1,12 @@
 package com.informatorio.apirestemprendimientos.entity;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
 
 @Entity
 public class Usuario {
@@ -17,6 +20,8 @@ public class Usuario {
     private String ciudad;
     private String provincia;
     private String email;
+    @CreationTimestamp
+    private LocalDateTime fechaDeCreacion;
 
     public Long getId() {
         return id;
@@ -74,6 +79,14 @@ public class Usuario {
         this.email = email;
     }
 
+    public LocalDateTime getFechaDeCreacion() {
+        return fechaDeCreacion;
+    }
+
+    public void setFechaDeCreacion(LocalDateTime fechaDeCreacion) {
+        this.fechaDeCreacion = fechaDeCreacion;
+    }
+
     @Override
     public String toString() {
         return "Usuario{" +
@@ -84,6 +97,7 @@ public class Usuario {
                 ", ciudad='" + ciudad + '\'' +
                 ", provincia='" + provincia + '\'' +
                 ", email='" + email + '\'' +
+                ", fechaDeCreacion=" + fechaDeCreacion +
                 '}';
     }
 }
