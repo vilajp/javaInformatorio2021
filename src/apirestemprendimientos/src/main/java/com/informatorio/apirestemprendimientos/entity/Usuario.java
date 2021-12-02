@@ -8,6 +8,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
 
+/*USUARIO:
+● id (autogenerado)
+● nombre
+● apellido
+● email (unico)
+● password (se almacenará pero no deberá ser mostrado)
+● fecha de creación (o alta)
+● ciudad
+● provincia
+● país
+● tipo: USUARIO | COLABORADOR | OWNER*/
+
 @Entity
 public class Usuario {
 
@@ -22,6 +34,7 @@ public class Usuario {
     private String email;
     @CreationTimestamp
     private LocalDateTime fechaDeCreacion;
+
 
     public Long getId() {
         return id;
