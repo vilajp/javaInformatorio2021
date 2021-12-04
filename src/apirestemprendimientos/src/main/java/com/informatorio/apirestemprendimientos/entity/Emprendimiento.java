@@ -18,6 +18,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,15 +34,16 @@ public class Emprendimiento {
     private LocalDateTime fechaDeCreacion;
     private BigInteger objetivo;
     private Boolean publicado;
-    private List<String> urls;
+    @OneToMany(mappedBy = "emprendimiento", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TodasLasUrl> urls = new ArrayList<>();
     private String tags;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id")
-    private Long usuario;
+    private Usuario usuario;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Evento evento;
 
-    public Emprendimiento(Long usuario) {
-        this.usuario = usuario;
-    }
+
 
     public Long getId() {
         return id;
@@ -99,14 +101,14 @@ public class Emprendimiento {
         this.publicado = publicado;
     }
 
-    public List<String> getUrls() {
+    public List<TodasLasUrl> getUrls() {
         return urls;
     }
 
-    public void setUrls(List<String> urls) {
-        this.urls = urls;
+    public void agregarUrl(TodasLasUrl todasLasUrl) {
+        urls.add(todasLasUrl);
+        todasLasUrl.setEmprendimiento(this);
     }
-
     public String getTags() {
         return tags;
     }
@@ -114,4 +116,13 @@ public class Emprendimiento {
     public void setTags(String tags) {
         this.tags = tags;
     }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 }
+

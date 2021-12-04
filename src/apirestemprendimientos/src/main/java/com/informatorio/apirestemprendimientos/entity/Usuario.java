@@ -2,11 +2,10 @@ package com.informatorio.apirestemprendimientos.entity;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /*USUARIO:
 ● id (autogenerado)
@@ -32,9 +31,16 @@ public class Usuario {
     private String ciudad;
     private String provincia;
     private String email;
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Emprendimiento> emprendimientos = new ArrayList<>();
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Voto> votos = new ArrayList<>();
     @CreationTimestamp
     private LocalDateTime fechaDeCreacion;
 
+    public List<Emprendimiento> getEmprendimientos() {
+        return emprendimientos;
+    }
 
     public Long getId() {
         return id;
@@ -100,6 +106,16 @@ public class Usuario {
         this.fechaDeCreacion = fechaDeCreacion;
     }
 
+    public void agregarEmprendimiento(Emprendimiento emprendimiento) {
+        emprendimientos.add(emprendimiento);
+        emprendimiento.setUsuario(this);
+    }
+
+    public void removerEmprendimiento(Emprendimiento emprendimiento) {
+        emprendimientos.remove(emprendimiento);
+        emprendimiento.setUsuario(null);
+    }
+
     @Override
     public String toString() {
         return "Usuario{" +
@@ -110,6 +126,7 @@ public class Usuario {
                 ", ciudad='" + ciudad + '\'' +
                 ", provincia='" + provincia + '\'' +
                 ", email='" + email + '\'' +
+                ", emprendimientos=" + emprendimientos +
                 ", fechaDeCreacion=" + fechaDeCreacion +
                 '}';
     }
