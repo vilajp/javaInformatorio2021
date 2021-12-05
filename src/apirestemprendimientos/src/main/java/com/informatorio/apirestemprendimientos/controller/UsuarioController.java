@@ -28,6 +28,10 @@ public class UsuarioController {
     @PostMapping
     public ResponseEntity<?> crear(@RequestBody Usuario usuario){
         return new ResponseEntity(usuarioRepository.save(usuario), HttpStatus.CREATED);
+    }
 
+    @DeleteMapping(value = "/{id}")
+    public void borrarUsuario(@PathVariable("id") Long id){
+        usuarioRepository.deleteById(id);
     }
 }

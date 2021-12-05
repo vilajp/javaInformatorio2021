@@ -1,5 +1,6 @@
 package com.informatorio.apirestemprendimientos.controller;
 
+import com.informatorio.apirestemprendimientos.dto.ProcesoJsonEmprendimiento;
 import com.informatorio.apirestemprendimientos.entity.Emprendimiento;
 import com.informatorio.apirestemprendimientos.entity.TodasLasTags;
 import com.informatorio.apirestemprendimientos.entity.TodasLasUrl;
@@ -26,6 +27,8 @@ public class EmprendimientoController {
     private UsuarioRepository usuarioRepository;
     private TodasLasTagsRepository todasLasTagsRepository;
     private TodasLasUrlRepository todasLasUrlRepository;
+    private ProcesoJsonEmprendimiento procesoJsonEmprendimiento;
+
 
     @Autowired
     public EmprendimientoController(EmprendimientoRepository emprendimientoRepository,
@@ -45,37 +48,33 @@ public class EmprendimientoController {
 
     @PostMapping(value = "/usuario/{idUser}/emprendimiento")
     public ResponseEntity<?> crearEmprendimiento(@PathVariable ("idUser") Long idUser,
-                                                 @RequestBody() Map<?, ?> todoElJson)
+                                                 @RequestBody() ProcesoJsonEmprendimiento procesoJsonEmprendimiento)
                                                  {
         Usuario usuario = usuarioRepository.findById(idUser)
                 .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
+
         Emprendimiento emprendimiento = new Emprendimiento();
         emprendimiento.setUsuario(usuario);
-        Map<?, ?> jsonSinUrlNiTags = todoElJson.entrySet().stream()
-                .filter(cadaClave-> cadaClave.getKey()!="tags"||cadaClave.getKey()!="urls")
-                .collect(Collectors.toMap(cadaClave -> cadaClave.getKey(), cadaValor-> cadaValor.getValue()));
-
-        List<String> listaTags = (List<String>) todoElJson.get("tags");
-        List<String> listaUrls = (List<String>) todoElJson.get("urls");
-
-        List<TodasLasTags> listaDeObjetosTag = listaTags.stream()
+        List<TodasLasTags> listaObjetosTag = procesoJsonEmprendimiento.getTags().stream()
                 .map(cadaTag -> creoTags(cadaTag))
                 .collect(Collectors.toList());
 
-        listaDeObjetosTag.stream()
+        listaObjetosTag.stream()
                 .forEach(emprendimiento::agregarTags);
 
-         List<TodasLasUrl> listaDeObjetosUrl = listaUrls.stream()
+        List<TodasLasUrl> listaObjetosUrl = procesoJsonEmprendimiento.getUrls().stream()
                  .map(cadaUrl -> creoUrls(cadaUrl))
                  .collect(Collectors.toList());
 
-         listaDeObjetosUrl.stream()
-                 .forEach(emprendimiento::agregarUrl);
+        listaObjetosUrl.stream()
+                .forEach(emprendimiento::agregarUrl);
 
-         emprendimiento.setNombre((String) jsonSinUrlNiTags.get("nombre"));
-         emprendimiento.setContenido((String) jsonSinUrlNiTags.get("contenido"));
-         emprendimiento.setDescripcion((String) jsonSinUrlNiTags.get("descripcion"));
-         emprendimiento.setObjetivo((Number) jsonSinUrlNiTags.get("objetivo"));
+        emprendimiento.setNombre(procesoJsonEmprendimiento.getNombre());
+        emprendimiento.setObjetivo(procesoJsonEmprendimiento.getObjetivo());
+        emprendimiento.setDescripcion(procesoJsonEmprendimiento.getDescripcion());
+        emprendimiento.setContenido(procesoJsonEmprendimiento.getContenido());
+
+        usuario.agregarEmprendimiento(emprendimiento);
 
         return new ResponseEntity(emprendimientoRepository.save(emprendimiento), HttpStatus.CREATED);
     }

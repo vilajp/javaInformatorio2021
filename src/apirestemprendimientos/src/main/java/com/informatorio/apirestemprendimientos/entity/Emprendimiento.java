@@ -49,6 +49,9 @@ public class Emprendimiento {
     @ManyToOne(fetch = FetchType.LAZY)
     private Evento evento;
 
+    public Emprendimiento() {
+        this.publicado = Boolean.TRUE;
+    }
 
     public Evento getEvento() {
         return evento;

@@ -32,6 +32,7 @@ public class Usuario {
     private String ciudad;
     private String provincia;
     private String email;
+    private String password;
     @JsonIgnore
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Emprendimiento> emprendimientos = new ArrayList<>();
@@ -111,6 +112,14 @@ public class Usuario {
 
     public void setFechaDeCreacion(LocalDateTime fechaDeCreacion) {
         this.fechaDeCreacion = fechaDeCreacion;
+    }
+
+    public String getPassword() {
+        return "*********";
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void agregarEmprendimiento(Emprendimiento emprendimiento) {

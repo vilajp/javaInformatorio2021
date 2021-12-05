@@ -39,4 +39,13 @@ public class TodasLasUrl {
     public void setEmprendimiento(Emprendimiento emprendimiento) {
         this.emprendimiento = emprendimiento;
     }
+
+    @Override
+    public String toString() {
+        return "TodasLasUrl{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", emprendimiento=" + emprendimiento +
+                '}';
+    }
 }
