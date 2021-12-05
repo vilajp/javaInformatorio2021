@@ -1,5 +1,6 @@
 package com.informatorio.apirestemprendimientos.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -31,8 +32,10 @@ public class Usuario {
     private String ciudad;
     private String provincia;
     private String email;
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Emprendimiento> emprendimientos = new ArrayList<>();
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Voto> votos = new ArrayList<>();
     @CreationTimestamp
@@ -40,6 +43,10 @@ public class Usuario {
 
     public List<Emprendimiento> getEmprendimientos() {
         return emprendimientos;
+    }
+
+    public List<Voto> getVotos(){
+        return votos;
     }
 
     public Long getId() {
@@ -116,6 +123,15 @@ public class Usuario {
         emprendimiento.setUsuario(null);
     }
 
+    public void agregarVoto(Voto voto) {
+        votos.add(voto);
+        voto.setUsuario(this);
+    }
+
+    public void removerVoto(Voto voto) {
+        votos.remove(voto);
+        voto.setUsuario(null);
+    }
     @Override
     public String toString() {
         return "Usuario{" +
@@ -127,6 +143,7 @@ public class Usuario {
                 ", provincia='" + provincia + '\'' +
                 ", email='" + email + '\'' +
                 ", emprendimientos=" + emprendimientos +
+                ", votos=" + votos +
                 ", fechaDeCreacion=" + fechaDeCreacion +
                 '}';
     }

@@ -13,6 +13,7 @@ package com.informatorio.apirestemprendimientos.entity;
 propios:
 -usuario*/
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -34,16 +35,24 @@ public class Emprendimiento {
     private LocalDateTime fechaDeCreacion;
     private BigInteger objetivo;
     private Boolean publicado;
+    @JsonIgnore
     @OneToMany(mappedBy = "emprendimiento", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TodasLasUrl> urls = new ArrayList<>();
-    private String tags;
+    @JsonIgnore
+    @OneToMany(mappedBy = "emprendimiento", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TodasLasTags> tags = new ArrayList<>();
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Evento evento;
 
 
+    public Evento getEvento() {
+        return evento;
+    }
 
     public Long getId() {
         return id;
@@ -106,16 +115,19 @@ public class Emprendimiento {
     }
 
     public void agregarUrl(TodasLasUrl todasLasUrl) {
-        urls.add(todasLasUrl);
+        this.urls.add(todasLasUrl);
         todasLasUrl.setEmprendimiento(this);
     }
-    public String getTags() {
+
+    public List<TodasLasTags> getTags() {
         return tags;
     }
 
-    public void setTags(String tags) {
-        this.tags = tags;
+    public void agregarTags(TodasLasTags variasTags) {
+         this.tags.add(variasTags);
+         variasTags.setEmprendimiento(this);
     }
+
 
     public Usuario getUsuario() {
         return usuario;

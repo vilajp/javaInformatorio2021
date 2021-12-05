@@ -10,6 +10,7 @@ package com.informatorio.apirestemprendimientos.entity;
 ● premio: $
 */
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -25,6 +26,7 @@ public class Evento {
     private Long id;
     private String detallesEvento;
     private String estadoEvento;
+    @JsonIgnore
     @OneToMany(mappedBy = "evento", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Emprendimiento> emprendimientosEvento = new ArrayList<>();
     private BigInteger premio;

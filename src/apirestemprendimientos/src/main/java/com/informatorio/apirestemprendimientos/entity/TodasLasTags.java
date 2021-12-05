@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 
 @Entity
-public class TodasLasUrl {
+public class TodasLasTags {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,10 +15,10 @@ public class TodasLasUrl {
     @ManyToOne(fetch = FetchType.LAZY)
     private Emprendimiento emprendimiento;
 
-
     public Long getId() {
         return id;
     }
+
 
     public void setId(Long id) {
         this.id = id;
@@ -38,5 +38,14 @@ public class TodasLasUrl {
 
     public void setEmprendimiento(Emprendimiento emprendimiento) {
         this.emprendimiento = emprendimiento;
+    }
+
+    @Override
+    public String toString() {
+        return "TodasLasTags{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", emprendimiento=" + emprendimiento +
+                '}';
     }
 }

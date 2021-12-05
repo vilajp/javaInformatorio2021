@@ -10,6 +10,7 @@ atributos mios:
 - instanciaDelVoto: si es dentro de un evento o fuera del evento - se restan cuando entra al evento.
 ● Observación: Se asume que los votos son LIKES (no hay negativos)*/
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -26,10 +27,13 @@ public class Voto {
     private String generadoDesde;
     @CreationTimestamp
     private LocalDateTime fechaDeCreacion;
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "emprendimiento_id")
     private Emprendimiento emprendimientoVotado;
     private String instaciaDelVoto;
 
