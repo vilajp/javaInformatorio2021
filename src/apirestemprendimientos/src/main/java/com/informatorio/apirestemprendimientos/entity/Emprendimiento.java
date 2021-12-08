@@ -139,5 +139,22 @@ public class Emprendimiento {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+
+    @Override
+    public String toString() {
+        return "Emprendimiento{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", contenido='" + contenido + '\'' +
+                ", fechaDeCreacion=" + fechaDeCreacion +
+                ", objetivo=" + objetivo +
+                ", publicado=" + publicado +
+                ", urls=" + urls +
+                ", tags=" + tags +
+                ", usuario=" + usuario +
+                ", evento=" + evento +
+                '}';
+    }
 }
 
