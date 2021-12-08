@@ -50,7 +50,7 @@ public class Emprendimiento {
     private Evento evento;
 
     public Emprendimiento() {
-        this.publicado = Boolean.TRUE;
+        this.publicado = Boolean.FALSE;
     }
 
     public Evento getEvento() {
