@@ -1,7 +1,11 @@
 package com.informatorio.apirestemprendimientos.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.informatorio.apirestemprendimientos.dto.TipoUsuario;
+import com.informatorio.apirestemprendimientos.util.ValidationHelper;
 import org.hibernate.annotations.CreationTimestamp;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -26,13 +30,18 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "Debe ingresar un Nombre")
     private String nombre;
+    @NotBlank(message = "Debe ingresar un Apellido")
     private String apellido;
     private String pais;
     private String ciudad;
     private String provincia;
+    @Column(unique = true)
+    @Email(regexp = ValidationHelper.EMAIL_REGEX)
     private String email;
     private String password;
+    private TipoUsuario tipo;/*USUARIO-COLABORADOR-OWNER*/
     @JsonIgnore
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Emprendimiento> emprendimientos = new ArrayList<>();
@@ -41,6 +50,15 @@ public class Usuario {
     private List<Voto> votos = new ArrayList<>();
     @CreationTimestamp
     private LocalDateTime fechaDeCreacion;
+
+
+    public TipoUsuario getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoUsuario tipo) {
+        this.tipo = tipo;
+    }
 
     public List<Emprendimiento> getEmprendimientos() {
         return emprendimientos;

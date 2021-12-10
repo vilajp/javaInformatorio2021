@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -28,11 +29,13 @@ public class Emprendimiento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message="Debe Ingresar un nombre")
     private String nombre;
     private String descripcion;
     private String contenido;
     @CreationTimestamp
     private LocalDateTime fechaDeCreacion;
+    @NotBlank(message="Debe ingresar un monto para objetivo")
     private BigInteger objetivo;
     private Boolean publicado;
     @JsonIgnore

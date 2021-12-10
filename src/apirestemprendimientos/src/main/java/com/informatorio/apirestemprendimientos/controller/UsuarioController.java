@@ -1,15 +1,15 @@
 package com.informatorio.apirestemprendimientos.controller;
 
 import com.informatorio.apirestemprendimientos.entity.Usuario;
+import com.informatorio.apirestemprendimientos.exception.EmprendimientoException;
 import com.informatorio.apirestemprendimientos.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.time.chrono.ChronoLocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,18 +51,18 @@ public class UsuarioController {
 
 
     @PostMapping
-    public ResponseEntity<?> crear(@RequestBody Usuario usuario) {
+    public ResponseEntity<?> crear(@Valid @RequestBody Usuario usuario) throws EmprendimientoException {
         return new ResponseEntity(usuarioRepository.save(usuario), HttpStatus.CREATED);
     }
 
     @DeleteMapping(value = "/{id}")
-    public void borrarUsuario(@PathVariable("id") Long id) {
+    public void borrarUsuario(@PathVariable("id") Long id) throws EmprendimientoException {
         usuarioRepository.deleteById(id);
     }
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<?> modificarUsuario(@PathVariable("id") Long id,
-                                            @RequestBody Usuario usuarioQueVino) {
+                                            @RequestBody Usuario usuarioQueVino) throws EmprendimientoException {
         Usuario usuarioAModificar = usuarioRepository.findById(id).get();
         Usuario usuarioModificado = modificoUsuario(usuarioAModificar, usuarioQueVino);
         return new ResponseEntity(usuarioRepository.save(usuarioModificado), HttpStatus.OK);
