@@ -28,15 +28,20 @@ public class Voto {
     @CreationTimestamp
     private LocalDateTime fechaDeCreacion;
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id")
+    @ManyToOne(fetch = FetchType.EAGER)
     private Usuario usuario;
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "emprendimiento_id")
-    private Emprendimiento emprendimientoVotado;
-    private String instaciaDelVoto;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Emprendimiento emprendimiento;
+    private Boolean enEvento;
 
+    public Boolean getEnEvento() {
+        return enEvento;
+    }
+
+    public void setEnEvento(Boolean enEvento) {
+        this.enEvento = enEvento;
+    }
 
     public Long getId() {
         return id;
@@ -44,6 +49,14 @@ public class Voto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Emprendimiento getEmprendimiento() {
+        return emprendimiento;
+    }
+
+    public void setEmprendimiento(Emprendimiento emprendimiento) {
+        this.emprendimiento = emprendimiento;
     }
 
     public String getGeneradoDesde() {

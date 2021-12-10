@@ -46,6 +46,15 @@ public class EmprendimientoController {
         return new ResponseEntity(emprendimientoRepository.findAll(), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/emprendimiento/no-publicados")
+    public ResponseEntity<?> buscarEmprendimientoSinPublicar() {
+        List<Emprendimiento> todosLosEmprendimientos = emprendimientoRepository.findAll();
+        List<Emprendimiento> listaEmprendimientoFiltrada = todosLosEmprendimientos.stream()
+                .filter(cadaEmprendimiento -> cadaEmprendimiento.getPublicado().equals(false))
+                .collect(Collectors.toList());
+        return new ResponseEntity(listaEmprendimientoFiltrada, HttpStatus.OK);
+    }
+
     @GetMapping(value = "/emprendimiento/tags/{nombreTag}")
     public ResponseEntity<?> buscarEmprendimiento(@PathVariable String nombreTag) {
         List<TodasLasTags> listaDeTags = todasLasTagsRepository.findAll();
@@ -53,14 +62,16 @@ public class EmprendimientoController {
                 .filter(cadaTag -> buscaTags(cadaTag, nombreTag))
                 .collect(Collectors.toList());
 
-        List<Emprendimiento> listaEmprendimiento = emprendimientoRepository.findAll();
-        List<Emprendimiento> listaEmprendimientoFiltrada = listaEmprendimiento.stream()
-                .filter(cadaEmprendimiento -> buscoEmprendimiento(cadaEmprendimiento, listaTagsFiltrada))
+        List<Emprendimiento> listaEmprendimientoFiltrada = listaTagsFiltrada.stream()
+                .map(cadaTag -> cadaTag.getEmprendimiento())
                 .collect(Collectors.toList());
-
         return new ResponseEntity(listaEmprendimientoFiltrada, HttpStatus.OK);
     }
 
+    public boolean buscaTags(TodasLasTags cadaTag, String nombreTag){
+        String cadaNombreTag = cadaTag.getNombre();
+        return cadaNombreTag.contains(nombreTag);
+    }
 
     @PostMapping(value = "/usuario/{idUser}/emprendimiento")
     public ResponseEntity<?> crearEmprendimiento(@PathVariable("idUser") Long idUser,
@@ -108,20 +119,6 @@ public class EmprendimientoController {
         return new ResponseEntity(emprendimientoRepository.save(emprendimientoModificado), HttpStatus.OK);
     }
 
-
-    public boolean buscoEmprendimiento(Emprendimiento cadaEmprendimiento,
-                                       List<TodasLasTags>listaTagsFiltrada){
-        Long idBuscado = cadaEmprendimiento.getId();
-        List<TodasLasTags> encoontreEmprendimiento = listaTagsFiltrada.stream()
-                .filter(cadaTag -> cadaTag.getEmprendimiento().getId().equals(idBuscado))
-                .collect(Collectors.toList());
-        return encoontreEmprendimiento.size()>0;
-    }
-
-    public boolean buscaTags(TodasLasTags cadaTag, String nombreTag){
-        String cadaNombreTag = cadaTag.getNombre();
-        return cadaNombreTag.equals(nombreTag);
-    }
     public TodasLasTags creoTags(String cadaTag) {
         TodasLasTags nuevaTag = new TodasLasTags();
         nuevaTag.setNombre(cadaTag);

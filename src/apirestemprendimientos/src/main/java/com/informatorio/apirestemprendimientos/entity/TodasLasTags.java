@@ -12,7 +12,7 @@ public class TodasLasTags {
     private Long id;
     private String nombre;
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Emprendimiento emprendimiento;
 
     public Long getId() {

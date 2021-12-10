@@ -43,7 +43,6 @@ public class Emprendimiento {
     private List<TodasLasTags> tags = new ArrayList<>();
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
