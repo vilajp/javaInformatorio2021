@@ -11,9 +11,11 @@ package com.informatorio.apirestemprendimientos.entity;
 */
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.informatorio.apirestemprendimientos.dto.EstadoEvento;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,8 +26,9 @@ public class Evento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "Debe ingresar los detalles del evento")
     private String detallesEvento;
-    private String estadoEvento;
+    private EstadoEvento estadoEvento;
     @JsonIgnore
     @OneToMany(mappedBy = "evento", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Emprendimiento> emprendimientosEvento = new ArrayList<>();
@@ -50,11 +53,11 @@ public class Evento {
         this.detallesEvento = detallesEvento;
     }
 
-    public String getEstadoEvento() {
+    public EstadoEvento getEstadoEvento() {
         return estadoEvento;
     }
 
-    public void setEstadoEvento(String estadoEvento) {
+    public void setEstadoEvento(EstadoEvento estadoEvento) {
         this.estadoEvento = estadoEvento;
     }
 
@@ -88,6 +91,16 @@ public class Evento {
 
     public void setFechaDeCierre(LocalDateTime fechaDeCierre) {
         this.fechaDeCierre = fechaDeCierre;
+    }
+
+    public List<Emprendimiento> getEmprendimientosEvento() {
+        return emprendimientosEvento;
+    }
+
+    public void setEmprendimientosEvento(Emprendimiento emprendimiento) {
+        this.emprendimientosEvento.add(emprendimiento);
+        emprendimiento.setEvento(this);
+
     }
 
     @Override

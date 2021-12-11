@@ -54,4 +54,14 @@ public class EmprendimientosResponseEntityExceptionHandler extends ResponseEntit
 
         return new ResponseEntity<Object>(error, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Object> handleIllegalArgumentException(Exception ex,
+                                                                       WebRequest request) {
+        ApiError error = new ApiError();
+        error.setStatus(HttpStatus.BAD_REQUEST);
+        error.setMensaje("no coincide Usuario a Modificar con datos modificados");
+
+        return new ResponseEntity<Object>(error, HttpStatus.BAD_REQUEST);
+    }
 }

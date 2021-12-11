@@ -59,6 +59,10 @@ public class Emprendimiento {
         return evento;
     }
 
+    public void setEvento(Evento evento) {
+        this.evento = evento;
+    }
+
     public Long getId() {
         return id;
     }

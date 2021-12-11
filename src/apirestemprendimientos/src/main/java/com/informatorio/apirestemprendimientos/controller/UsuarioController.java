@@ -63,9 +63,24 @@ public class UsuarioController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<?> modificarUsuario(@PathVariable("id") Long id,
                                             @RequestBody Usuario usuarioQueVino) throws EmprendimientoException {
-        Usuario usuarioAModificar = usuarioRepository.findById(id).get();
-        Usuario usuarioModificado = modificoUsuario(usuarioAModificar, usuarioQueVino);
+        Usuario usuarioAModificar = usuarioRepository.findById(id)
+                .orElseThrow(() -> new EmprendimientoException("no existe Usuario"));
+        Usuario usuarioModificado = null;
+        if (usuarioQueVino.getId().equals(id)) {
+            usuarioModificado = modificoUsuario(usuarioAModificar, usuarioQueVino);
+        }
         return new ResponseEntity(usuarioRepository.save(usuarioModificado), HttpStatus.OK);
+    }
+
+    public Usuario modificoUsuario(Usuario usuarioAModificar, Usuario usuarioQueVino){
+        usuarioAModificar.setNombre(usuarioQueVino.getNombre());
+        usuarioAModificar.setApellido(usuarioQueVino.getApellido());
+        usuarioAModificar.setCiudad(usuarioQueVino.getCiudad());
+        usuarioAModificar.setProvincia(usuarioQueVino.getProvincia());
+        usuarioAModificar.setPais(usuarioQueVino.getPais());
+        usuarioAModificar.setEmail(usuarioQueVino.getEmail());
+        usuarioAModificar.setTipo(usuarioQueVino.getTipo());
+        return usuarioAModificar;
     }
 
     public Boolean buscaUsuarios(Usuario cadaUsuario, String campo, String valor) {
@@ -87,21 +102,11 @@ public class UsuarioController {
         return null;
     }
 
-    public Usuario modificoUsuario(Usuario usuarioAModificar, Usuario usuarioQueVino){
-        usuarioAModificar.setNombre(usuarioQueVino.getNombre());
-        usuarioAModificar.setApellido(usuarioQueVino.getApellido());
-        usuarioAModificar.setCiudad(usuarioQueVino.getCiudad());
-        usuarioAModificar.setProvincia(usuarioQueVino.getProvincia());
-        usuarioAModificar.setPais(usuarioQueVino.getPais());
-        usuarioAModificar.setEmail(usuarioQueVino.getEmail());
-        return usuarioAModificar;
-
-    }
-
     public Boolean buscoUsuarioFecha(LocalDateTime fechaCreacion, String dia, String mes, String anio){
         LocalDateTime fechaBusqueda = LocalDateTime.parse(anio+"-"+mes+"-"+dia+"T23:59:59.000");
-            return fechaCreacion.isAfter(fechaBusqueda)==Boolean.TRUE;
+        return fechaCreacion.isAfter(fechaBusqueda)==Boolean.TRUE;
     }
+
 }
 
 

@@ -159,6 +159,7 @@ public class Usuario {
         votos.remove(voto);
         voto.setUsuario(null);
     }
+
     @Override
     public String toString() {
         return "Usuario{" +
@@ -169,6 +170,8 @@ public class Usuario {
                 ", ciudad='" + ciudad + '\'' +
                 ", provincia='" + provincia + '\'' +
                 ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", tipo=" + tipo +
                 ", emprendimientos=" + emprendimientos +
                 ", votos=" + votos +
                 ", fechaDeCreacion=" + fechaDeCreacion +
