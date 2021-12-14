@@ -35,7 +35,7 @@ public class Emprendimiento {
     private String contenido;
     @CreationTimestamp
     private LocalDateTime fechaDeCreacion;
-    @NotBlank(message="Debe ingresar un monto para objetivo")
+    /*@NotBlank(message="Debe ingresar un monto para objetivo")*/
     private BigInteger objetivo;
     private Boolean publicado;
     @JsonIgnore
@@ -48,19 +48,21 @@ public class Emprendimiento {
     @ManyToOne(fetch = FetchType.LAZY)
     private Usuario usuario;
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Evento evento;
+    @ManyToMany(mappedBy = "emprendimientosEvento")
+    private List<Evento> listaEventos = new ArrayList<>();
 
     public Emprendimiento() {
         this.publicado = Boolean.FALSE;
     }
 
-    public Evento getEvento() {
-        return evento;
+    public List<Evento> getListaEventos() {
+        return listaEventos;
     }
 
-    public void setEvento(Evento evento) {
-        this.evento = evento;
+    public void setListaEventos(Evento evento) {
+        this.listaEventos.add(evento);
+        evento.setEmprendimientosEvento(this);
+
     }
 
     public Long getId() {
@@ -146,21 +148,5 @@ public class Emprendimiento {
         this.usuario = usuario;
     }
 
-    @Override
-    public String toString() {
-        return "Emprendimiento{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", descripcion='" + descripcion + '\'' +
-                ", contenido='" + contenido + '\'' +
-                ", fechaDeCreacion=" + fechaDeCreacion +
-                ", objetivo=" + objetivo +
-                ", publicado=" + publicado +
-                ", urls=" + urls +
-                ", tags=" + tags +
-                ", usuario=" + usuario +
-                ", evento=" + evento +
-                '}';
-    }
 }
 

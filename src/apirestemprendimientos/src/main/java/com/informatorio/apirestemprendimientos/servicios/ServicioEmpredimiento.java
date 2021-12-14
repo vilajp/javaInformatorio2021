@@ -3,7 +3,9 @@ package com.informatorio.apirestemprendimientos.servicios;
 import com.informatorio.apirestemprendimientos.entity.Emprendimiento;
 import com.informatorio.apirestemprendimientos.entity.TodasLasTags;
 import com.informatorio.apirestemprendimientos.entity.TodasLasUrl;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ServicioEmpredimiento {
 
     public boolean buscaTags(TodasLasTags cadaTag, String nombreTag){

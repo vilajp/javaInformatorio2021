@@ -160,21 +160,4 @@ public class Usuario {
         voto.setUsuario(null);
     }
 
-    @Override
-    public String toString() {
-        return "Usuario{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", apellido='" + apellido + '\'' +
-                ", pais='" + pais + '\'' +
-                ", ciudad='" + ciudad + '\'' +
-                ", provincia='" + provincia + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", tipo=" + tipo +
-                ", emprendimientos=" + emprendimientos +
-                ", votos=" + votos +
-                ", fechaDeCreacion=" + fechaDeCreacion +
-                '}';
-    }
 }

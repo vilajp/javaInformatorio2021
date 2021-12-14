@@ -3,6 +3,7 @@ package com.informatorio.apirestemprendimientos.controller;
 import com.informatorio.apirestemprendimientos.entity.Emprendimiento;
 import com.informatorio.apirestemprendimientos.entity.Evento;
 import com.informatorio.apirestemprendimientos.entity.Usuario;
+import com.informatorio.apirestemprendimientos.entity.Voto;
 import com.informatorio.apirestemprendimientos.exception.EmprendimientoException;
 import com.informatorio.apirestemprendimientos.repository.EmprendimientoRepository;
 import com.informatorio.apirestemprendimientos.repository.EventoRepository;
@@ -14,6 +15,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.informatorio.apirestemprendimientos.dto.EstadoEvento.ABIERTO;
 
@@ -27,8 +34,8 @@ public class EventoController {
 
     @Autowired
     public EventoController(EmprendimientoRepository emprendimientoRepository,
-                          UsuarioRepository usuarioRepository,
-                          VotoRepository votoRepository,
+                            UsuarioRepository usuarioRepository,
+                            VotoRepository votoRepository,
                             EventoRepository eventoRepository) {
         this.emprendimientoRepository = emprendimientoRepository;
         this.usuarioRepository = usuarioRepository;
@@ -49,8 +56,8 @@ public class EventoController {
 
     @PutMapping(value = "/evento/{id}")
     public ResponseEntity<?> modificarEvento(@PathVariable("id") Long id,
-                                                     @RequestBody Evento eventoQueVino)
-                                            throws EmprendimientoException {
+                                             @RequestBody Evento eventoQueVino)
+            throws EmprendimientoException {
         Evento eventoAModificar = eventoRepository.findById(id).get();
         Evento eventoModificado = modificoEvento(eventoAModificar,
                 eventoQueVino);
@@ -58,14 +65,14 @@ public class EventoController {
     }
 
     public Evento modificoEvento(Evento eventoAModificar,
-                                                 Evento eventoQueVino) {
+                                 Evento eventoQueVino) {
         eventoAModificar.setDetallesEvento(eventoQueVino.getDetallesEvento());
         eventoAModificar.setFechaDeCierre(eventoQueVino.getFechaDeCierre());
         eventoAModificar.setPremio(eventoQueVino.getPremio());
         return eventoAModificar;
     }
 
-    @GetMapping(value="/evento/{eventoId}/emprendimiento/{emprendimientoId}")
+    @GetMapping(value = "/evento/{eventoId}/emprendimiento/{emprendimientoId}")
     public ResponseEntity<?> inscribirEnEvento(@PathVariable("eventoId") Long eventoId,
                                                @PathVariable("emprendimientoId") Long emprendimientoId)
             throws EmprendimientoException {
@@ -73,10 +80,52 @@ public class EventoController {
                 .orElseThrow(() -> new EmprendimientoException("no existe Evento"));
         Emprendimiento emprendimiento = emprendimientoRepository.findById(emprendimientoId)
                 .orElseThrow(() -> new EmprendimientoException("no existe emprendimiento"));
-        if (evento.getEstadoEvento().equals(ABIERTO)&&emprendimiento.getEvento().equals(null)) {
+        List<Evento> listaEventos = emprendimiento.getListaEventos().stream()
+                .filter(cadaEvento -> cadaEvento.getId().equals(eventoId))
+                .collect(Collectors.toList());
+        if (evento.getEstadoEvento().equals(ABIERTO) && listaEventos.size() == 0) {
             evento.setEmprendimientosEvento(emprendimiento);
-            emprendimiento.setEvento(evento);
+
+        } else {
+            throw new EmprendimientoException("El Evento esta cerrado o ese emprendimiento ya esta inscripto");
         }
         return new ResponseEntity(eventoRepository.save(evento), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/evento/{id}/ranking")
+    public ResponseEntity<?> rankingEmprendimientos(@PathVariable("id") Long id)
+            throws EmprendimientoException {
+
+        List<Voto> listaVotos = votoRepository.findAll().stream()
+                .filter(cadaVoto -> cadaVoto.getEvento().getId().equals(id))
+                .collect(Collectors.toList());
+
+        Map<Long, Integer> resultados = new HashMap<>();
+
+        for (Voto listaVoto : listaVotos) {
+            Integer contador = resultados.getOrDefault(listaVoto.getId(), 0);
+            resultados.put(listaVoto.getEmprendimiento().getId(), contador++);
+        }
+        List<Long> idsOrdenados = new ArrayList<>();
+        List<Integer> numeros = new ArrayList<>();
+        while (resultados.size() != 0) {
+            Integer mayor = 0;
+            Long idMayor = Long.valueOf(0);
+            for (Map.Entry<Long, Integer> entry : resultados.entrySet()) {
+                if (entry.getKey() > mayor) {
+                    mayor = entry.getValue();
+                    idMayor = entry.getKey();
+                }
+            }
+            idsOrdenados.add(idMayor);
+            numeros.add(mayor);
+            resultados.remove(idMayor);
+        }
+        List<Emprendimiento> ranking = null;
+        for (Long cadaId : idsOrdenados) {
+            ranking.add(emprendimientoRepository.findById(cadaId).get());
+        }
+        return new ResponseEntity(ranking, HttpStatus.OK);
+
     }
 }

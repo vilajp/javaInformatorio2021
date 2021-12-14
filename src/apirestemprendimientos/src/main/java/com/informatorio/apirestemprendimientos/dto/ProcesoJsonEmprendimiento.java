@@ -80,4 +80,5 @@ public class ProcesoJsonEmprendimiento {
     public void setEvento(Evento evento) {
         this.evento = evento;
     }
+
 }

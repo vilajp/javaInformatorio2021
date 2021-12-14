@@ -1,6 +1,5 @@
 package com.informatorio.apirestemprendimientos.controller;
 
-import com.informatorio.apirestemprendimientos.dto.MensajePersonalizado;
 import com.informatorio.apirestemprendimientos.dto.ProcesoJsonEmprendimiento;
 import com.informatorio.apirestemprendimientos.exception.EmprendimientoException;
 import com.informatorio.apirestemprendimientos.entity.Emprendimiento;
@@ -28,7 +27,6 @@ public class EmprendimientoController {
     private TodasLasTagsRepository todasLasTagsRepository;
     private TodasLasUrlRepository todasLasUrlRepository;
     private ProcesoJsonEmprendimiento procesoJsonEmprendimiento;
-    private MensajePersonalizado mensaje;
     private ServicioEmpredimiento se;
 
 
@@ -36,11 +34,13 @@ public class EmprendimientoController {
     public EmprendimientoController(EmprendimientoRepository emprendimientoRepository,
                                     UsuarioRepository usuarioRepository,
                                     TodasLasTagsRepository todasLasTagsRepository,
-                                    TodasLasUrlRepository todasLasUrlRepository) {
+                                    TodasLasUrlRepository todasLasUrlRepository,
+                                    ServicioEmpredimiento se) {
         this.emprendimientoRepository = emprendimientoRepository;
         this.usuarioRepository = usuarioRepository;
         this.todasLasTagsRepository = todasLasTagsRepository;
         this.todasLasUrlRepository = todasLasUrlRepository;
+        this.se = se;
     }
 
     @GetMapping(value = "/emprendimiento")
@@ -76,7 +76,7 @@ public class EmprendimientoController {
                                                                     throws EmprendimientoException {
 
         Usuario usuario = usuarioRepository.findById(idUser)
-        .orElseThrow(()-> new EmprendimientoException("no existe Usuario"));
+            .orElseThrow(()-> new EmprendimientoException("no existe Usuario"));
 
         Emprendimiento emprendimiento = new Emprendimiento();
         emprendimiento.setUsuario(usuario);

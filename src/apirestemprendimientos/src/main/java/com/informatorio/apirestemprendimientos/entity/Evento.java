@@ -30,7 +30,7 @@ public class Evento {
     private String detallesEvento;
     private EstadoEvento estadoEvento;
     @JsonIgnore
-    @OneToMany(mappedBy = "evento", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Emprendimiento> emprendimientosEvento = new ArrayList<>();
     private BigInteger premio;
     @CreationTimestamp
@@ -99,7 +99,7 @@ public class Evento {
 
     public void setEmprendimientosEvento(Emprendimiento emprendimiento) {
         this.emprendimientosEvento.add(emprendimiento);
-        emprendimiento.setEvento(this);
+        emprendimiento.setListaEventos(this);
 
     }
 

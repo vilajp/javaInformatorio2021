@@ -33,14 +33,15 @@ public class Voto {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     private Emprendimiento emprendimiento;
-    private Boolean enEvento;
+    @ManyToOne(fetch= FetchType.EAGER)
+    private Evento evento;
 
-    public Boolean getEnEvento() {
-        return enEvento;
+    public Evento getEvento() {
+        return evento;
     }
 
-    public void setEnEvento(Boolean enEvento) {
-        this.enEvento = enEvento;
+    public void setEvento(Evento enEvento) {
+        this.evento = evento;
     }
 
     public Long getId() {
