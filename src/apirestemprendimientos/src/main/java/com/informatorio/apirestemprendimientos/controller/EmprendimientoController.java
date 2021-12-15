@@ -1,5 +1,6 @@
 package com.informatorio.apirestemprendimientos.controller;
 
+import com.informatorio.apirestemprendimientos.dto.MostrarEmprendimiento;
 import com.informatorio.apirestemprendimientos.dto.ProcesoJsonEmprendimiento;
 import com.informatorio.apirestemprendimientos.exception.EmprendimientoException;
 import com.informatorio.apirestemprendimientos.entity.Emprendimiento;
@@ -28,6 +29,7 @@ public class EmprendimientoController {
     private TodasLasUrlRepository todasLasUrlRepository;
     private ProcesoJsonEmprendimiento procesoJsonEmprendimiento;
     private ServicioEmpredimiento se;
+    private MostrarEmprendimiento muestroEmprendimientos;
 
 
     @Autowired
@@ -43,9 +45,39 @@ public class EmprendimientoController {
         this.se = se;
     }
 
-    @GetMapping(value = "/emprendimiento")
+    /*@GetMapping(value = "/emprendimiento")
     public ResponseEntity<?> obtenerTodosEmprendimientos() {
         return new ResponseEntity(emprendimientoRepository.findAll(), HttpStatus.OK);
+    }*/
+    @GetMapping(value = "/emprendimiento")
+    public ResponseEntity<?> obtenerTodosEmprendimientos() {
+        List<Emprendimiento> todosLosEmprendimientos = emprendimientoRepository.findAll();
+        List<MostrarEmprendimiento> listaEmprendimientoFiltrada = todosLosEmprendimientos.stream()
+                .map(cadaEmprendimiento -> armoDtoEmprendimiento(cadaEmprendimiento))
+                .collect(Collectors.toList());
+        return new ResponseEntity(listaEmprendimientoFiltrada, HttpStatus.OK);
+    }
+
+    public MostrarEmprendimiento armoDtoEmprendimiento(Emprendimiento cadaemprendimiento){
+        MostrarEmprendimiento jsonMostrar = new MostrarEmprendimiento();
+        jsonMostrar.setId(cadaemprendimiento.getId());
+        jsonMostrar.setNombre(cadaemprendimiento.getNombre());
+        jsonMostrar.setDescripcion(cadaemprendimiento.getDescripcion());
+        jsonMostrar.setContenido(cadaemprendimiento.getContenido());
+        jsonMostrar.setFechaDeCreacion(cadaemprendimiento.getFechaDeCreacion());
+        jsonMostrar.setObjetivo(cadaemprendimiento.getObjetivo());
+        jsonMostrar.setPublicado(cadaemprendimiento.getPublicado());
+        List<String> listaTags = cadaemprendimiento.getTags().stream()
+                .map(cadaTag -> cadaTag.getNombre())
+                .collect(Collectors.toList());
+        jsonMostrar.setTags(listaTags);
+        List<String> listaUrls = cadaemprendimiento.getUrls().stream()
+                .map(cadaUrl -> cadaUrl.getNombre())
+                .collect(Collectors.toList());
+        jsonMostrar.setUrls(listaUrls);
+        jsonMostrar.setUsuario(cadaemprendimiento.getUsuario().getNombre()+
+                " "+cadaemprendimiento.getUsuario().getApellido());
+        return jsonMostrar;
     }
 
     @GetMapping(value = "/emprendimiento/no-publicados")
@@ -67,7 +99,12 @@ public class EmprendimientoController {
         List<Emprendimiento> listaEmprendimientoFiltrada = listaTagsFiltrada.stream()
                 .map(cadaTag -> cadaTag.getEmprendimiento())
                 .collect(Collectors.toList());
-        return new ResponseEntity(listaEmprendimientoFiltrada, HttpStatus.OK);
+
+        List<MostrarEmprendimiento> listaEmprendimientos = listaEmprendimientoFiltrada.stream()
+                .map(cadaEmprendimiento -> armoDtoEmprendimiento(cadaEmprendimiento))
+                .collect(Collectors.toList());
+
+        return new ResponseEntity(listaEmprendimientos, HttpStatus.OK);
     }
 
     @PostMapping(value = "/usuario/{idUser}/emprendimiento")

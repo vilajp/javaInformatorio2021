@@ -1,8 +1,8 @@
 package com.informatorio.apirestemprendimientos.controller;
 
+import com.informatorio.apirestemprendimientos.dto.JsonRanking;
 import com.informatorio.apirestemprendimientos.entity.Emprendimiento;
 import com.informatorio.apirestemprendimientos.entity.Evento;
-import com.informatorio.apirestemprendimientos.entity.Usuario;
 import com.informatorio.apirestemprendimientos.entity.Voto;
 import com.informatorio.apirestemprendimientos.exception.EmprendimientoException;
 import com.informatorio.apirestemprendimientos.repository.EmprendimientoRepository;
@@ -32,11 +32,13 @@ public class EventoController {
     private VotoRepository votoRepository;
     private EventoRepository eventoRepository;
 
+
     @Autowired
     public EventoController(EmprendimientoRepository emprendimientoRepository,
                             UsuarioRepository usuarioRepository,
                             VotoRepository votoRepository,
-                            EventoRepository eventoRepository) {
+                            EventoRepository eventoRepository)
+    {
         this.emprendimientoRepository = emprendimientoRepository;
         this.usuarioRepository = usuarioRepository;
         this.votoRepository = votoRepository;
@@ -102,9 +104,9 @@ public class EventoController {
 
         Map<Long, Integer> resultados = new HashMap<>();
 
-        for (Voto listaVoto : listaVotos) {
-            Integer contador = resultados.getOrDefault(listaVoto.getId(), 0);
-            resultados.put(listaVoto.getEmprendimiento().getId(), contador++);
+        for (Voto cadaVoto : listaVotos) {
+            Integer contador = resultados.getOrDefault(cadaVoto.getEmprendimiento().getId(), 0);
+            resultados.put(cadaVoto.getEmprendimiento().getId(), ++contador);
         }
         List<Long> idsOrdenados = new ArrayList<>();
         List<Integer> numeros = new ArrayList<>();
@@ -112,7 +114,7 @@ public class EventoController {
             Integer mayor = 0;
             Long idMayor = Long.valueOf(0);
             for (Map.Entry<Long, Integer> entry : resultados.entrySet()) {
-                if (entry.getKey() > mayor) {
+                if (entry.getValue() > mayor) {
                     mayor = entry.getValue();
                     idMayor = entry.getKey();
                 }
@@ -121,9 +123,15 @@ public class EventoController {
             numeros.add(mayor);
             resultados.remove(idMayor);
         }
-        List<Emprendimiento> ranking = null;
+        List<JsonRanking> ranking = new ArrayList<>();
+
         for (Long cadaId : idsOrdenados) {
-            ranking.add(emprendimientoRepository.findById(cadaId).get());
+            JsonRanking jsonRanking = new JsonRanking();
+            jsonRanking.setId(cadaId);
+            jsonRanking.setNombre(emprendimientoRepository.getById(cadaId).getNombre());
+            jsonRanking.setVotos(numeros.get(idsOrdenados.indexOf(cadaId)));
+            ranking.add(jsonRanking);
+
         }
         return new ResponseEntity(ranking, HttpStatus.OK);
 
