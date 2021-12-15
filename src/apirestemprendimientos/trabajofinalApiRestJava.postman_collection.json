@@ -1,0 +1,530 @@
+{
+	"info": {
+		"_postman_id": "8ba31d32-ca3b-4486-b434-ddbdb8f93762",
+		"name": "trabajofinalApiRestJava",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "usuario",
+			"item": [
+				{
+					"name": "Traer todos los Usuarios(get)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				},
+				{
+					"name": "Cargar nuevo Usuario(post)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"nombre\": \"Andrea Maria del Carmen\",\r\n\"apellido\": \"Miron\",\r\n\"ciudad\":\"Resistencia\",\r\n\"provincia\": \"Chaco\",\r\n\"pais\": \"Argentina\",\r\n\"email\":\"andreamiron@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/usuario",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar usuario por id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/usuario/13",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario",
+								"13"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Traer usuarios por campo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/usuario/consulta/nombre/Dulcinea",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario",
+								"consulta",
+								"nombre",
+								"Dulcinea"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Traigo usuarios desde fecha",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/usuario/consulta/05/12/2021",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario",
+								"consulta",
+								"05",
+								"12",
+								"2021"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "modificar Usuario",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"id\": 10,\r\n        \"nombre\": \"Juan Pablo\",\r\n        \"apellido\": \"Vila\",\r\n        \"pais\": \"Argentina\",\r\n        \"ciudad\": \"Resistencia\",\r\n        \"provincia\": \"Chaco\",\r\n        \"email\": \"vilajp@hotmail.com\",\r\n        \"password\": \"*********\",\r\n        \"fechaDeCreacion\": \"2021-12-04T12:19:19.752495\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/usuario/10",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario",
+								"10"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "emprendimiento",
+			"item": [
+				{
+					"name": "Traer todos los emprendimientos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				},
+				{
+					"name": "Cargar nuevo emprendimiento",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"nombre\": \"Superkiosco\",\r\n\"descripcion\": \"App para administracion de kioscos\",\r\n\"contenido\": \"con esta app se puede administrar stock, clientes, empleados, las compras y ventas dentro de kiosco\",\r\n\"objetivo\": 1000000,\r\n\"tags\":[\"kiosco\", \"administracion\", \"gestion\"],\r\n\"urls\":[\"www.kioscos.com\", \"www.domino.com\"]\r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/usuario/2/emprendimiento",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario",
+								"2",
+								"emprendimiento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cargar emprendimiento usuario inexistente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"nombre\": \"Donde como?\",\r\n\"descripcion\": \"buscador de precios baratos para comer\",\r\n\"contenido\":\"Compara las diferente ofertas de menu y propone la mas barata\",\r\n\"objetivo\": 1000000,\r\n\"tags\":[\"barato\", \"ofertas\", \"comida\"],\r\n\"urls\":[\"www.dondecomo.com\", \"www.cuantopagohoy.com\"]\r\n }"
+						},
+						"url": {
+							"raw": "localhost:8080/usuario/1/emprendimiento?=SuperChino&descripcion=Informacion sobre supermercado chino nuevo&contenido=Informa las nuevas ubicaciones de supermercados chinos&objetivo=1000000&tags=supermercados,chinos,datos&urls=www.superchinos.com,www.comprovinobarato.com",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario",
+								"1",
+								"emprendimiento"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "SuperChino"
+								},
+								{
+									"key": "descripcion",
+									"value": "Informacion sobre supermercado chino nuevo"
+								},
+								{
+									"key": "contenido",
+									"value": "Informa las nuevas ubicaciones de supermercados chinos"
+								},
+								{
+									"key": "objetivo",
+									"value": "1000000"
+								},
+								{
+									"key": "tags",
+									"value": "supermercados,chinos,datos"
+								},
+								{
+									"key": "urls",
+									"value": "www.superchinos.com,www.comprovinobarato.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar emprendimiento",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/emprendimiento",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"emprendimiento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "modificar emprendimiento",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"id\": 12,\r\n        \"nombre\": \"Vino Barato?\",\r\n        \"descripcion\": \"App para emergencias de bebidas\",\r\n        \"contenido\": \"Haciendo uso de google maps, la app conoce nos muestra los lugares mas cercanos para comprar vino\",\r\n        \"objetivo\": 2000000,\r\n        \"publicado\": false\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/emprendimiento/12",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"emprendimiento",
+								"12"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "traer emprendimiento con mismo tag",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/emprendimiento/tags/maps",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"emprendimiento",
+								"tags",
+								"maps"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Traer emprendimientos no publicados",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/emprendimiento/no-publicado",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"emprendimiento",
+								"no-publicado"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "voto",
+			"item": [
+				{
+					"name": "Nuevo voto",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"generadoDesde\": \"mobile\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/usuario/15/emprendimiento/13/voto",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario",
+								"15",
+								"emprendimiento",
+								"13",
+								"voto"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "todos los votos de un usuario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/usuario/11/votos",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario",
+								"11",
+								"votos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Voto en evento",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"generadoDesde\": \"mobile\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/usuario/14/evento/1/emprendimiento/15/voto",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario",
+								"14",
+								"evento",
+								"1",
+								"emprendimiento",
+								"15",
+								"voto"
+							],
+							"query": [
+								{
+									"key": "generadoDesde",
+									"value": "mobile",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "evento",
+			"item": [
+				{
+					"name": "crear evento",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/evento",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"evento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar evento",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/evento/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"evento",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "modificar evento",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"detallesEvento\": \"Netflix te invita a persentar tu startup y ganar 100000 dolares\",\r\n\"fechaDeCierre\": \"2021-12-30T23:59:00\",\r\n\"premio\": 100000\r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/evento/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"evento",
+								"3"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "Netflix te invita a persentar tu startup y ganar 200000 dolares",
+									"disabled": true
+								},
+								{
+									"key": "fechaDeCierre",
+									"value": "2021-12-30T23:59:00",
+									"disabled": true
+								},
+								{
+									"key": "premio",
+									"value": "200000",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "inscribir emprendimiento a evento",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				},
+				{
+					"name": "ranking emprendimientos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/evento/1/ranking",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"evento",
+								"1",
+								"ranking"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
