@@ -33,6 +33,7 @@ public class Voto {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     private Emprendimiento emprendimiento;
+    @JsonIgnore
     @ManyToOne(fetch= FetchType.EAGER)
     private Evento evento;
 
@@ -40,7 +41,7 @@ public class Voto {
         return evento;
     }
 
-    public void setEvento(Evento enEvento) {
+    public void setEvento(Evento evento) {
         this.evento = evento;
     }
 
@@ -91,6 +92,8 @@ public class Voto {
                 ", generadoDesde='" + generadoDesde + '\'' +
                 ", fechaDeCreacion=" + fechaDeCreacion +
                 ", usuario=" + usuario +
+                ", emprendimiento=" + emprendimiento +
+                ", evento=" + evento +
                 '}';
     }
 }

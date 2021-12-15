@@ -33,9 +33,20 @@ public class Evento {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Emprendimiento> emprendimientosEvento = new ArrayList<>();
     private BigInteger premio;
+    @OneToMany(mappedBy = "evento")
+    private List<Voto> votos = new ArrayList<>();
     @CreationTimestamp
     private LocalDateTime fechaDeCreacion;
     private LocalDateTime fechaDeCierre;
+
+    public List<Voto> getVotos() {
+        return votos;
+    }
+
+    public void setVotos(Voto voto) {
+        this.votos.add(voto);
+        voto.setEvento(this);
+    }
 
     public Long getId() {
         return id;

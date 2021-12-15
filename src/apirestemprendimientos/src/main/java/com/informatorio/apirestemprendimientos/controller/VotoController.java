@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,7 +59,7 @@ public class VotoController {
             nuevoVoto.setUsuario(usuario);
             nuevoVoto.setGeneradoDesde(voto.getGeneradoDesde());
             nuevoVoto.setEmprendimiento(emprendimiento);
-        }else if (buscoVoto.size()==1 && cantidadEventos>0){
+        }else if ((buscoVoto.size()==1||buscoVoto.size() == 0) && cantidadEventos>0){
             throw new EmprendimientoException("Emprendimiento en Evento, para votar use Url: /usuario/"+usuarioId+
                     "/evento/{eventoId}/emprendimiento/"+emprendimientoId);
         }else{
@@ -67,7 +68,7 @@ public class VotoController {
         return new ResponseEntity(votoRepository.save(nuevoVoto), HttpStatus.CREATED);
     }
 
-    @PostMapping(value = "/usuario/{usuarioId}/evento/eventoId/emprendimiento/{emprendimientoId}/voto")
+    @PostMapping(value = "/usuario/{usuarioId}/evento/{eventoId}/emprendimiento/{emprendimientoId}/voto")
     public ResponseEntity<?> votarEnEvento(@RequestBody Voto voto,
                                    @PathVariable Long usuarioId,
                                    @PathVariable Long emprendimientoId,
@@ -80,8 +81,9 @@ public class VotoController {
                 .orElseThrow(() ->new EmprendimientoException("No existe ese Evento"));
         List<Voto> todosLosVotos = votoRepository.findAll();
         List<Voto> buscoVoto = todosLosVotos.stream()
-                .filter(cadaVoto -> cadaVoto.getEmprendimiento().getId().equals(emprendimientoId)&&
-                        cadaVoto.getUsuario().getId().equals(usuarioId)&&cadaVoto.getEvento().equals(eventoId))
+                .filter(cadaVoto -> (cadaVoto.getEmprendimiento().getId().equals(emprendimientoId)&&
+                                    cadaVoto.getUsuario().getId().equals(usuarioId)&&
+                                    cadaVoto.getEvento().getId().equals(eventoId)))
                 .collect(Collectors.toList());
 
         int cantidadEventos = emprendimiento.getListaEventos().size();
@@ -104,7 +106,7 @@ public class VotoController {
             nuevoVoto.setUsuario(usuario);
             nuevoVoto.setGeneradoDesde(voto.getGeneradoDesde());
             nuevoVoto.setEmprendimiento(emprendimiento);
-            nuevoVoto.setEvento(evento);
+            evento.setVotos(nuevoVoto);
         }else{
             throw new EmprendimientoException("Ud ya voto por ese emprendimiento");
         }

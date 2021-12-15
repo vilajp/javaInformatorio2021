@@ -61,7 +61,7 @@ public class Emprendimiento {
 
     public void setListaEventos(Evento evento) {
         this.listaEventos.add(evento);
-        evento.setEmprendimientosEvento(this);
+
 
     }
 

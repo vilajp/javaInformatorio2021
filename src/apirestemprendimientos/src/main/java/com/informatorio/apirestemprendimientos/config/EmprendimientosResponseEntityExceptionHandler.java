@@ -13,6 +13,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,4 +65,15 @@ public class EmprendimientosResponseEntityExceptionHandler extends ResponseEntit
 
         return new ResponseEntity<Object>(error, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    public ResponseEntity<Object> handleSQLIntegrityConstraintViolationException(Exception ex,
+                                                                 WebRequest request) {
+        ApiError error = new ApiError();
+        error.setStatus(HttpStatus.BAD_REQUEST);
+        error.setMensaje("No puede usar emails repetidos, Use otro!");
+
+        return new ResponseEntity<Object>(error, HttpStatus.BAD_REQUEST);
+    }
+
 }
