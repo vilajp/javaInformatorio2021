@@ -1,5 +1,6 @@
 package com.informatorio.apirestemprendimientos.controller;
 
+import com.informatorio.apirestemprendimientos.dto.VotoPorUsuario;
 import com.informatorio.apirestemprendimientos.entity.Emprendimiento;
 import com.informatorio.apirestemprendimientos.entity.Evento;
 import com.informatorio.apirestemprendimientos.entity.Usuario;
@@ -26,6 +27,7 @@ public class VotoController {
     private UsuarioRepository usuarioRepository;
     private VotoRepository votoRepository;
     private EventoRepository eventoRepository;
+    private VotoPorUsuario votoPorUsuario;
 
     @Autowired
     public VotoController(EmprendimientoRepository emprendimientoRepository,
@@ -114,12 +116,25 @@ public class VotoController {
     }
 
     @GetMapping("/usuario/{usuarioId}/votos")
-    public ResponseEntity<?> votar(@PathVariable Long usuarioId) {
+    public ResponseEntity<?> votosPorUsuario(@PathVariable Long usuarioId) {
         List<Voto> todosLosVotos =  votoRepository.findAll();
-        List<Voto> votosUsuario = todosLosVotos.stream()
+        List<VotoPorUsuario> votosUsuario = todosLosVotos.stream()
                 .filter(cadaVoto -> cadaVoto.getUsuario().getId().equals(usuarioId))
+                .map(cadaVoto->creoJsonVotoPorUsuario(cadaVoto))
                 .collect(Collectors.toList());
+
         return new ResponseEntity(votosUsuario, HttpStatus.OK);
+    }
+
+    private VotoPorUsuario creoJsonVotoPorUsuario(Voto cadaVoto){
+        VotoPorUsuario nuevoVoto = new VotoPorUsuario();
+
+        nuevoVoto.setEmprendimientoVotado("id:"+cadaVoto.getEmprendimiento().getId()
+                +" "+cadaVoto.getEmprendimiento().getNombre());
+        nuevoVoto.setGeneradoDesde(cadaVoto.getGeneradoDesde());
+        nuevoVoto.setFechaCreacion(cadaVoto.getFechaDeCreacion());
+        nuevoVoto.setId(cadaVoto.getId());
+        return nuevoVoto;
     }
 }
 
